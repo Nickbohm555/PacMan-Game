@@ -1,5 +1,5 @@
 # PacMan-Game
-I created a PacMan game using JFrame GUI with 4 ghosts that move at random. This project demonstrated my knowledge using object oriented design as I used over 9 classes all to connect back to my main method of running the program. 
+I created a PacMan game using JFrame GUI with 4 ghosts that move at random. This project demonstrated my knowledge using object oriented design as I used over 11 classes all to connect back to my main method of running the program. 
 
 In the game, every move I make creates a random move for each of the 4 ghosts. If I run into any of the ghosts, I lose a life and start back over. However, if i collect one of the larger pellets, PacMan goes into 'Pellet mode' and is able to eat one of the ghosts.
 
