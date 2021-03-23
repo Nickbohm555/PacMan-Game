@@ -1,0 +1,39 @@
+package FinalProject;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+public class SetCoins {
+
+	
+		boolean is_collected;
+		int x, y, w,h;
+		boolean[][] curr_location;
+		
+		
+		public SetCoins(int x, int y, int w, int h) {
+			
+			is_collected =  false;
+			this.x=x;
+			this.y=y;
+			this.w=w;
+			this.h=h;
+		}
+		
+		public void covered() {
+			
+			is_collected = true;
+			
+			
+			
+		}
+
+public void fill( Graphics g2  ) {
+	g2.setColor(Color.DARK_GRAY);
+	g2.fillOval(x, y, w, h);
+	//g2.drawRect(x, y, w, h);
+}
+		
+	}
+	
+	
