@@ -1,0 +1,39 @@
+package FinalProject;
+
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+public class main_Method {
+
+	int count;
+	
+	public static void main(String[] args) throws IOException {
+		
+		JFrame frame = new JFrame("My PacMan");
+		frame.setSize(825, 825);
+		
+		
+		 final PacMan_Board board= new PacMan_Board();
+		MovePacMan  move = new MovePacMan(board);
+		frame.addKeyListener(move);
+		
+		
+	
+		frame.add(board);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+	
+	
+	
+	
+	
+	
+}
