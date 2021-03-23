@@ -1,0 +1,117 @@
+package FinalProject;
+
+public class ghost_location {
+
+	boolean[][] ghost_1_location = new boolean[15][15];
+	int x;
+	int y;
+	PacMan_Board board ;
+	
+	public ghost_location( PacMan_Board board ) {
+		this.board = board;
+		// starting location of ghost_1
+		x = 55*7;
+		y = 55* 8;
+		
+		for(int i=0;  i<15; i++) {
+			for(int j=0;  j<15; j++) {
+				ghost_1_location[i][j] = false;
+			}
+		}	
+		ghost_1_location[7][8]= true;
+		//ghost_1_location[]
+		
+	}
+	
+	
+	public void change_x_left(int x) {
+		
+		for(int i=1;  i<15; i++) {
+			for(int j=1;  j<15; j++) {
+
+				if( (i*55)  == this.x  &&  (j*55) ==y  ) {
+					System.out.println("x: "+ i + "y: "+ j);
+					if(board.filled[i-1][j]==true) { // one to the left
+						
+					}
+					else {
+						System.out.println(x);
+						ghost_1_location[i][j] = false;
+						ghost_1_location[i-1][j] = true;
+						this.x = x;
+						
+				}
+				}
+	
+			}
+			}
+		
+	}
+	
+	public void change_x_right(int x) {
+		
+		for(int i=0;  i<15; i++) {
+			for(int j=0;  j<15; j++) {
+
+				if( (i*55)  == this.x  &&  (j*55) ==this.y  ) {
+					if(board.filled[i+1][j]==true) { // one to the left
+						
+					}
+					else {
+						ghost_1_location[i][j] = false;
+						ghost_1_location[i+1][j] = true;
+						this.x = x;
+						
+				}
+				}
+	
+			}
+			}
+		
+	}
+	
+	public void change_y_up(int y) {
+		for(int i= 0;  i<15; i++) {
+			for(int j=0;  j<15; j++) {
+
+				if( (i*55)  == this.x  &&  (j*55) ==this.y  ) {
+					if(board.filled[i][j-1]==true) { // one to the left
+						
+					}
+					else {
+						ghost_1_location[i][j] = false;
+						ghost_1_location[i][j-1] = true;
+						this.y = y;
+				}
+				}
+	
+			}
+			}	
+			}
+	
+	public void change_y_down(int y) {
+		
+		for(int i=0;  i<15; i++) {
+			for(int j=0;  j<15; j++) {
+
+				if( (i*55)  == this.x  &&  (j*55) ==this.y  ) {
+					if(board.filled[i][j+1]==true) { // one to the left
+					
+					}
+					else {
+						ghost_1_location[i][j] = false;
+						ghost_1_location[i][j+1] = true;
+						this.y = y;
+						
+				}
+				}
+	
+			}
+			}
+
+	}
+	
+	
+	
+	
+}
