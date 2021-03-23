@@ -1,0 +1,384 @@
+package FinalProject;
+
+public class PacMan_Location {
+	int x ;
+	int y;
+
+	// somehow associate each movement with new position
+	boolean[][] filled; 
+	boolean[][] curr_location = new boolean[15][15];
+	SetCoins[][] coins;
+	PacMan_Board board;
+
+	// have each location be false unless it is current location
+
+	public PacMan_Location(int x_pos, int y_pos, boolean[][] filled, PacMan_Board board) {
+		this.board = board;
+		this.coins  = board.coins;
+		this.x = x_pos; 
+		this.y = y_pos;
+		this.filled = filled;
+
+		curr_location[1][1]= true;
+		// starting point is true
+
+		for(int i=0;  i<15; i++) {
+			for(int j=0;  j<15; j++) {
+				curr_location[i][j] = false;
+			}
+		}		
+	}
+
+	//  if current location = true and coins[][] is false, change to true
+
+	public void change_x_left(int x) {
+		int r = (int) (Math.random() * 4);
+		if(r==0) {
+			board.ghost_loc_1.change_x_left(board.ghost_loc_1.x - 55);
+			board.ghost_loc_2.change_x_right(board.ghost_loc_2.x + 55);
+			board.ghost_loc_3.change_y_up(board.ghost_loc_3.y - 55);
+			board.ghost_loc_4.change_x_right(board.ghost_loc_4.x + 55);
+		}
+		if(r==1) {
+			board.ghost_loc_1.change_x_right(board.ghost_loc_1.x + 55);
+			board.ghost_loc_2.change_y_down(board.ghost_loc_2.y + 55);
+			board.ghost_loc_3.change_x_left(board.ghost_loc_3.x - 55);
+			board.ghost_loc_4.change_x_right(board.ghost_loc_4.x + 55);
+		}
+		if(r==2) {
+			board.ghost_loc_1.change_y_down(board.ghost_loc_1.y + 55);
+			board.ghost_loc_3.change_x_right(board.ghost_loc_3.x + 55);
+			board.ghost_loc_2.change_y_up(board.ghost_loc_2.y - 55);
+			board.ghost_loc_4.change_y_down(board.ghost_loc_4.y + 55);
+		}		
+		if(r==3) {
+			board.ghost_loc_1.change_y_up(board.ghost_loc_1.y - 55);
+			board.ghost_loc_2.change_x_left(board.ghost_loc_2.x - 55);
+			board.ghost_loc_3.change_y_down(board.ghost_loc_3.y + 55);
+			board.ghost_loc_4.change_y_down(board.ghost_loc_4.y + 55);
+		}
+		
+		
+		for(int i=0;  i<15; i++) {
+			for(int j=0;  j<15; j++) {
+
+				if( (i*55)  == this.x  &&  (j*55) ==this.y  ) {
+
+					if(filled[i-1][j]==true) { // one to the left
+						// do nothing
+					}
+					else {
+						curr_location[i][j] = false;
+						curr_location[i-1][j] = true;						
+						this.x = x;
+
+
+						if(i == 3 && j == 12 && this.board.pellets[2][12].is_collected ==false) {
+							this.board.pellets[2][12].covered();
+							this.board.Pellet_mode = 1;
+						}
+						if(i== 13 && j == 2 && this.board.pellets[12][2].is_collected ==false) {
+							this.board.pellets[12][2].covered();
+							this.board.Pellet_mode = 1;
+						}
+
+						if(i== 13 && j == 12 && this.board.pellets[12][12].is_collected ==false) {
+							this.board.pellets[12][12].covered();
+							this.board.Pellet_mode = 1;
+						}
+
+
+						if(this.coins[i][j].is_collected == false) {
+							this.coins[i][j].covered();
+							board.count++;
+						}
+
+
+					}
+
+
+				}
+
+
+			}
+		}
+
+	}
+
+	public void change_y_down(int y) {
+		
+		int r = (int) (Math.random() * 4);
+		if(r==0) {
+			board.ghost_loc_1.change_x_left(board.ghost_loc_1.x - 55);
+			board.ghost_loc_2.change_y_down(board.ghost_loc_2.y + 55);
+			board.ghost_loc_3.change_y_up(board.ghost_loc_3.y - 55);
+			board.ghost_loc_4.change_y_up(board.ghost_loc_4.y - 55);
+		}
+		if(r==1) {
+			board.ghost_loc_1.change_x_right(board.ghost_loc_1.x + 55);	
+			board.ghost_loc_2.change_x_right(board.ghost_loc_2.x + 55);
+			board.ghost_loc_3.change_x_left(board.ghost_loc_3.x - 55);
+			board.ghost_loc_4.change_x_right(board.ghost_loc_4.x + 55);
+		}
+		if(r==2) {
+			board.ghost_loc_1.change_y_down(board.ghost_loc_1.y + 55);
+			board.ghost_loc_2.change_x_left(board.ghost_loc_2.x - 55);
+			board.ghost_loc_3.change_x_right(board.ghost_loc_3.x + 55);
+			board.ghost_loc_4.change_y_down(board.ghost_loc_4.y + 55);
+			
+		}		
+		if(r==3) {
+			board.ghost_loc_1.change_y_up(board.ghost_loc_1.y - 55);
+			board.ghost_loc_2.change_y_up(board.ghost_loc_2.y - 55);
+			board.ghost_loc_3.change_y_down(board.ghost_loc_3.y + 55);
+			board.ghost_loc_4.change_y_up(board.ghost_loc_4.y - 55);
+			
+		}
+		
+		
+		
+		for(int i=0;  i<15; i++) {
+			for(int j=0;  j<15; j++) {
+
+				if( (i*55)  == this.x  &&  (j*55) ==this.y  ) {
+
+					if(filled[i][j+1]==true) { // one to the left
+						// do nothing
+					}
+					else {
+						curr_location[i][j] = false;
+						curr_location[i][j+1] = true;
+						this.y = y;
+
+						if(i == 2 && j == 11 &&  this.board.pellets[2][12].is_collected ==false) {
+							this.board.pellets[2][12].covered();
+							this.board.Pellet_mode = 1;
+						}
+
+						if(i== 12 && j == 1 && this.board.pellets[12][2].is_collected ==false) {
+							this.board.pellets[12][2].covered();
+							this.board.Pellet_mode = 1;
+						}
+
+						if(i== 12 && j == 11 && this.board.pellets[12][12].is_collected ==false) {
+							this.board.pellets[12][12].covered();
+							this.board.Pellet_mode = 1;
+						}
+						//pellets[2][12] 
+						//pellets[12][12] 
+						//pellets[12][2] 
+
+						if(this.coins[i][j].is_collected == false) {
+							this.coins[i][j].covered();
+							board.count++;
+						}
+					}
+
+
+				}
+
+
+			}
+		}
+	}
+
+	public void change_y_up(int y) {
+		
+		int r = (int) (Math.random() * 4);
+		if(r==0) {
+			board.ghost_loc_1.change_x_left(board.ghost_loc_1.x - 55);
+			board.ghost_loc_2.change_x_left(board.ghost_loc_2.x - 55);
+			board.ghost_loc_3.change_x_right(board.ghost_loc_3.x + 55);
+			board.ghost_loc_4.change_x_right(board.ghost_loc_4.x + 55);
+		}
+		if(r==1) {
+			board.ghost_loc_1.change_x_right(board.ghost_loc_1.x + 55);
+			board.ghost_loc_2.change_x_right(board.ghost_loc_2.x + 55);
+			board.ghost_loc_3.change_x_left(board.ghost_loc_3.x - 55);
+			board.ghost_loc_4.change_x_right(board.ghost_loc_4.x + 55);
+		}
+		if(r==2) {
+			board.ghost_loc_1.change_y_down(board.ghost_loc_1.y + 55);
+			board.ghost_loc_2.change_y_down(board.ghost_loc_2.y + 55);
+			board.ghost_loc_3.change_y_up(board.ghost_loc_3.y - 55);
+			board.ghost_loc_4.change_y_down(board.ghost_loc_4.y + 55);
+					
+		}		
+		if(r==3) {
+			board.ghost_loc_1.change_y_up(board.ghost_loc_1.y - 55);
+			board.ghost_loc_2.change_y_up(board.ghost_loc_2.y - 55);
+			board.ghost_loc_3.change_y_down(board.ghost_loc_3.y + 55);
+			board.ghost_loc_4.change_y_up(board.ghost_loc_4.y - 55);
+			
+		}
+		
+		
+		
+		
+		for(int i=0;  i<15; i++) {
+			for(int j=0;  j<15; j++) {
+
+				if( (i*55)  == this.x  &&  (j*55) ==this.y  ) {
+
+					if(filled[i][j-1]==true) { // one to the left
+						// do nothing
+					}
+					else {
+						curr_location[i][j] = false;
+						curr_location[i][j-1] = true;
+						this.y = y;
+
+
+						if(i == 2 && j == 13 && this.board.pellets[2][12].is_collected ==false) {
+							this.board.pellets[2][12].covered();
+							this.board.Pellet_mode = 1;
+						}
+						if(i== 12 && j == 3 && this.board.pellets[12][2].is_collected ==false) {
+							this.board.pellets[12][2].covered();
+							this.board.Pellet_mode = 1;
+						}
+
+						if(i== 12 && j == 13 && this.board.pellets[12][12].is_collected ==false) {
+							this.board.pellets[12][12].covered();
+							this.board.Pellet_mode = 1;
+						}
+
+
+
+						if(this.coins[i][j].is_collected == false) {
+							this.coins[i][j].covered();
+							board.count++;
+						}
+					}
+
+
+				}
+
+
+			}
+		}
+	}
+	
+	public void Portal_1() {
+		this.x = 0;
+		this.y = 13 * 55;
+		if(this.coins[14][13].is_collected == false) {
+			this.coins[14][13].covered();
+			board.count++;
+		}
+		
+	}
+	
+	
+	public void Portal_2() {
+		this.x =(770) ;
+		this.y = 715;
+		
+		if(this.coins[0][13].is_collected == false) {
+			this.coins[0][13].covered();
+			board.count++;
+		}
+		
+	}
+	
+	
+	public void Portal_3() {
+		this.x =(770) ;
+		this.y = 55;
+		
+		if(this.coins[ 0 ][1 ].is_collected == false) {
+			this.coins[0][1].covered();
+			board.count++;
+		}
+		
+	}
+	
+	public void Portal_4() {
+		this.x =(0) ;
+		this.y = 55;
+		
+		if(this.coins[ 14 ][1 ].is_collected == false) {
+			this.coins[14][1].covered();
+			board.count++;
+		}
+		
+	}
+
+
+	public void change_x_right(int x) {
+		
+		int r = (int) (Math.random() * 4);
+		if(r==0) {
+			board.ghost_loc_1.change_x_left(board.ghost_loc_1.x - 55);
+			board.ghost_loc_3.change_x_left(board.ghost_loc_3.x - 55);
+			board.ghost_loc_2.change_y_up(board.ghost_loc_2.y - 55);
+			board.ghost_loc_4.change_x_left(board.ghost_loc_4.x - 55);
+			
+		}
+		if(r==1) {
+			board.ghost_loc_1.change_x_right(board.ghost_loc_1.x + 55);
+			board.ghost_loc_2.change_x_right(board.ghost_loc_2.x + 55);
+			board.ghost_loc_3.change_x_right(board.ghost_loc_3.x + 55);
+			board.ghost_loc_4.change_x_right(board.ghost_loc_4.x + 55);
+		}
+		if(r==2) {
+			board.ghost_loc_1.change_y_down(board.ghost_loc_1.y + 55);
+			board.ghost_loc_2.change_y_down(board.ghost_loc_2.y + 55);
+			board.ghost_loc_3.change_y_down(board.ghost_loc_3.y + 55);
+			board.ghost_loc_4.change_y_down(board.ghost_loc_4.y + 55);
+					
+		}		
+		if(r==3) {
+			board.ghost_loc_1.change_y_up(board.ghost_loc_1.y - 55);
+			board.ghost_loc_2.change_x_left(board.ghost_loc_2.x - 55);
+			board.ghost_loc_3.change_y_down(board.ghost_loc_3.y + 55);
+			board.ghost_loc_4.change_x_left(board.ghost_loc_4.x - 55);
+			
+			
+		}
+
+		for(int i=0;  i<15; i++) {
+			for(int j=0;  j<15; j++) {
+
+				if( (i*55)  == this.x  &&  (j*55) ==this.y  ) {
+
+					
+					
+					if(filled[i+1][j]==true ) { // one to the right is filled
+						
+					}
+					else {
+						
+						curr_location[i][j] = false;
+						curr_location[i+1][j] = true;
+						this.x = x;
+
+						if(i == 1 && j == 12 &&  this.board.pellets[2][12].is_collected ==false) {
+							this.board.pellets[2][12].covered();
+							this.board.Pellet_mode = 1;
+						}
+						if(i== 11 && j == 2 && this.board.pellets[12][2].is_collected ==false) {
+							this.board.pellets[12][2].covered();
+							this.board.Pellet_mode = 1;
+						}
+
+						if(i== 11 && j == 12 &&  this.board.pellets[12][12].is_collected ==false) {
+							this.board.pellets[12][12].covered();
+							this.board.Pellet_mode = 1;
+						}
+
+
+						if(this.coins[i][j].is_collected == false) {
+							this.coins[i][j].covered();
+							board.count++;
+						}
+					}
+
+
+				}
+
+
+			}
+		}
+	}
+}
