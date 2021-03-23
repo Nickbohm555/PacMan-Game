@@ -1,0 +1,380 @@
+package FinalProject;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+
+import Hw2.Circle;
+import Hw2.Square;
+
+
+/*
+ * THIS CLASS IS WHERE I REPAINT MY BOARD AFTER EVERY MOVE. 
+ * I PASS THIS CLASS INTO PRETTY MUCH EVERY CONSTRUCTOR I USE
+ *  
+ */
+
+public class PacMan_Board extends JComponent {
+
+	
+	SetCoins[][] coins;
+	// 2D ARRAY TO TRACK WHICH COINS ARE 'EATEN'
+	Pellets[][] pellets;
+	// USE TO TRACK WHETHER MY PELLETS ARE 'EATEN'
+	int count;
+	// COUNT HOW MANY COINS HAVE BEEN EATEN
+	Square_PacMan[][] square;
+	// DRAWING OUT THE GAMEBOARD
+	BufferedImage image = null;
+	// IMAGE = IMAGE OF PACMAN
+	BufferedImage image_ghost = null;
+	// FIRST IMAGE OF THE GHOST
+	BufferedImage image_ghost_1 = null;
+	// SECOND IMAGE OF THE GHOST
+	BufferedImage image_ghost_2 = null;
+	// 3RD IMAGE OF GHOST
+	BufferedImage image_ghost_3 = null;
+	// 4TH GHOST
+ 
+	 PacMan_Location location;
+	 // CLASS WHHICH TRACK  X AND Y VALUE OF PACMAN AT THE MOMENT
+	 File[] image_PacMan;
+	 // FILE OF WHICH PACMAN TO CHOOSE DEPENDING ON WHICH DIRECTION
+	 // AND ALSO WHICH 'MODE' PACMAN IS IN ...
+	 
+	 int which_pic;
+	 boolean[][] filled;
+	 int Pellet_mode = 0;
+	int moves_after_pellet = 0;
+	ghost_location ghost_loc_1;
+	ghost_location_other ghost_loc_2;
+	ghost_location_3 ghost_loc_3;
+	ghost_location_4 ghost_loc_4;
+	int lives = 3;
+	
+	
+	PacMan_Board() throws IOException {
+		/*
+		 * 
+		 * INITIALIZE ALL IMPORTANT VARIABLES SUCH AS
+		 * COINS, PELLETS, WHICH AREAS ARE FILLED VS EMPTY
+		 * 
+		 */
+		count = 0;
+		filled = new boolean[16][16];
+		square = new Square_PacMan[15][15];
+		coins = new  SetCoins[15][15];
+		pellets = new Pellets[15][15];
+		JOptionPane.showMessageDialog(this,"YOU  HAVE 3 LIVES. IF YOU COLLECT A BIG PELLET YOU MAY EAT GHOST" );  
+		
+		
+		/*
+		 * MAKE A FOR LOOP AND GET EACH 'FILLED' SPOT AND EACH EMPTY SPOT
+		 * FILLED SPOTS ARE 'BLUE' ON THE SCREEN AND CAN'T BE MOVED TO...
+		 */
+		
+		for(int i=0; i<15; i++) {
+			for(int j=0; j<15; j++) {
+				filled[i][j] = false;
+				
+				square[i][j] = new Square_PacMan(i * 55, j * 55, 55, 55);
+				
+				
+				
+				
+				if(j==14 && ( i>=0 &&  i<=14  )) {
+					filled[i][j] = true;
+				}
+				if(i==3 && ( j>=11 &&  j<=14  )) {
+					filled[i][j] = true;
+				}
+				if(i==10 && ( j>=11 &&  j<=14  )) {
+					filled[i][j] = true;
+				}
+				if(i==6 && ( j>=4 &&  j<=7  )) {
+					filled[i][j] = true;
+				}
+				if(i==8 && ( j>=4 &&  j<=7  )) {
+					filled[i][j] = true;
+				}
+				if(j==9 && ( i>=12 &&  i<=14  )) {
+					filled[i][j] = true;
+				}
+				if(i==12 && ( j>=8 &&  j<=10  )) {
+					filled[i][j] = true;
+				}
+				
+				if(j==5 && ( i>=12 &&  i<=14  )) {
+					filled[i][j] = true;
+				}
+				if(i==12 && ( j>=4 &&  j<=6  )) {
+					filled[i][j] = true;
+				}
+				if(i==10 && ( j>=1 &&  j<=2  )) {
+					filled[i][j] = true;
+				}
+				if(i==5 && ( j>=1 &&  j<=2  )) {
+					filled[i][j] = true;
+				}
+				if(j==10 && ( i>=5 &&  i<=8  )) {
+					filled[i][j] = true;
+				}
+				
+				if(j==8 && ( i>=1 &&  i<=3  )) {
+					filled[i][j] = true;
+				}
+				if(j==4 && ( i>=1 &&  i<=3  )) {
+					filled[i][j] = true;
+				}
+				
+				if(i==14 && ( j >= 2 &&  j <= 12  )) {
+					filled[i][j] = true;
+				}
+				if(i==0 && ( j >= 2 &&  j <= 12  )) {
+					filled[i][j] = true;
+				}
+				if(j==0 && ( i >= 0 &&  i <= 14  )) {
+					filled[i][j] = true;
+				}
+				
+				
+			}	
+			filled[14][13] = false;
+			filled[15][13] = true;
+			filled[15][1] = true;
+			
+			// INITIALIZE EACH GHOST CLASS TO LATER FIND LOCATIONS...
+			ghost_loc_4 = new ghost_location_4(this);		
+			ghost_loc_3 = new ghost_location_3(this);		
+			ghost_loc_2 = new ghost_location_other(this);		
+			ghost_loc_1 = new ghost_location( this );
+			
+			// DRAW COINS WHERE EVER THERE IS AN EMPTY SPOT
+			for(int x=0; x<15; x++) {
+				for(int y=0; y<15; y++) {
+					if(filled[x][y]== false) {
+						coins[x][y] =  new SetCoins((x * 55) + 13, (y * 55) + 13, 27, 27);
+					}
+				}
+			}
+			
+			// DRAW 3 SPECIAL PELLETS: IF COLLECTED, GO INTO 'PELLET MODE'
+			pellets[2][12] = new Pellets((2*55), (12*55), 55,55);
+			pellets[12][12] = new Pellets((12*55), (12*55), 55,55);
+			pellets[12][2] = new Pellets((12*55), (2*55), 55,55);
+			
+			
+			}
+		// STARTING LOCATION OF MY PACMAN ON SPOT [1,1]...
+		location = new PacMan_Location(55, 55, filled, this);
+		
+		File image1 = new File("PacMan_right.png");
+		File image2 = new File("PacMan_left.png");
+		File image3 = new File("PacMan_up.png");
+		File image4 = new File("PacMan_down.png");
+		
+		File image5 = new File("PacMan_right_pellet.png");
+		File image6 = new File("PacMan_left_pellet.png");
+		File image7 = new File("PacMan_up_pellet.png");
+		File image8 = new File("PacMan_down_pellet.png");
+		
+		
+		 image_PacMan= new File[8];
+		image_PacMan[0]= image1;
+		image_PacMan[1]= image2;
+		image_PacMan[2]= image3;
+		image_PacMan[3]= image4;
+		//-------- PELLET MODE
+		image_PacMan[4]= image5;
+		image_PacMan[5]= image6;
+		image_PacMan[6]= image7;
+		image_PacMan[7]= image8;
+		which_pic = 0;
+		// RIGHT NOW, 'WHICH_PIC' IS 0 WHICH IS PACMAN POINTING TO RIGHT
+		
+	}
+	public void paint(Graphics g) {
+		
+		// IF ALL COINS ARE COLLECTED, CALL GAME OVER
+		if(count == 137)
+			JOptionPane.showMessageDialog(this,"GAME OVER. SCORE: " + count );  
+		
+		
+		Graphics2D g2= (Graphics2D) g;
+		
+		// IF ANY OF THE PELLETS ARE COLLECTED, COUNT MOVES AFTER FOR 'PELLET MODE'...
+		if(pellets[2][12].is_collected) 
+			moves_after_pellet ++;
+		
+		else if(pellets[12][2].is_collected) 
+			moves_after_pellet ++;
+		
+		else if(pellets[12][12].is_collected) 
+			moves_after_pellet ++;
+		
+		if(moves_after_pellet == 15) {
+			Pellet_mode = 0;
+			moves_after_pellet = 0;
+		}
+
+
+		// IF PELLETS ARE NOT 'COLLECTED' LEAVE THEM THERE
+		if(pellets[2][12].is_collected == false)
+			pellets[2][12].fill(g2);
+	        
+		if(pellets[12][12].is_collected  == false  )
+			pellets[12][12].fill(g2);
+		
+		if(pellets[12][2].is_collected == false )
+			pellets[12][2].fill(g2);
+		
+		
+		// DRAW INITIAL GAMEBOARD, 'FILLED' SPOTS ARE BLUE. 
+		//IF COINS ARE NOT COLLECTED, DRAW THEM
+		for(int i=0; i<15; i++) {
+			for(int j=0; j<15; j++) {
+				
+			
+				if(filled[i][j]== true) {
+					square[i][j].fill(g2);
+				}
+				
+				else {
+					try  {
+						if(coins[i][j].is_collected == false) 
+							coins[i][j].fill(g2);}  catch(Exception e) {
+						
+					}
+				}
+		
+			}
+		}
+		
+		
+		// GET ALL 4 IMAGES READY TO BE SHOWN...	
+		try {
+			image = ImageIO.read(image_PacMan[which_pic]);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+		File ghost_ = new File("ghost.png");
+		image_ghost = ImageIO.read(ghost_);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		try {
+			File ghost_1 = new File("ghost.gif");
+			image_ghost_1 = ImageIO.read(ghost_1);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		try {
+			File ghost_2 = new File("blue_ghost.png");
+			image_ghost_2 = ImageIO.read(ghost_2);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		try {
+			File ghost_3 = new File("pink_ghost.png");
+			image_ghost_3 = ImageIO.read(ghost_3);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		
+		// DRAW THE 4 GHOSTS AND ONE PACMAN...
+		g2.drawImage(image_ghost_3, ghost_loc_4.x, ghost_loc_4.y ,55, 55, null);	
+		g2.drawImage(image_ghost_2, ghost_loc_3.x, ghost_loc_3.y ,55, 55, null);	
+		g2.drawImage(image_ghost_1, ghost_loc_2.x, ghost_loc_2.y ,55, 55, null);	
+		g2.drawImage(image_ghost, ghost_loc_1.x, ghost_loc_1.y ,55, 55, null);	
+		g2.drawImage(image, location.x, location.y, 55, 55, null);
+		
+		// IF THE GHOSTS AND PACMAN COLLIDE, DECIDE WHAT TO DO NEXT
+		if((location.x == ghost_loc_1.x && location.y == ghost_loc_1.y) || (location.x == ghost_loc_2.x && location.y == ghost_loc_2.y) ||	(location.x == ghost_loc_3.x && location.y == ghost_loc_3.y) || (location.x == ghost_loc_4.x && location.y == ghost_loc_4.y)) {
+			
+		
+			// IF PELLET MODE IS ACTIVATED, THROW GHOST OFF SCREEN
+			if(Pellet_mode == 1) {
+				
+				if(  (location.x == ghost_loc_1.x && location.y == ghost_loc_1.y)     ) {
+					ghost_loc_1.x = 10000;
+					ghost_loc_1.y = 10000;
+					g2.drawImage(image_ghost, ghost_loc_1.x, ghost_loc_1.y ,55, 55, null);	
+				}
+				else if(  (location.x == ghost_loc_2.x && location.y == ghost_loc_2.y)   ) {
+					ghost_loc_2.x = 10000;
+					ghost_loc_2.y = 10000;
+					g2.drawImage(image_ghost_1, ghost_loc_2.x, ghost_loc_2.y ,55, 55, null);
+				}
+				else if(  (location.x == ghost_loc_4.x && location.y == ghost_loc_4.y)   ) {
+					ghost_loc_4.x = 10000;
+					ghost_loc_4.y = 10000;
+					g2.drawImage(image_ghost_1, ghost_loc_2.x, ghost_loc_2.y ,55, 55, null);
+				}
+				else {
+					ghost_loc_3.x = 10000;
+					ghost_loc_3.y = 10000;
+					g2.drawImage(image_ghost_2, ghost_loc_3.x, ghost_loc_3.y ,55, 55, null);
+				}
+					
+			}
+			
+			else {
+			
+			// IF PELLET MODE IS NOT ACTIVATED, YOU LOSE A LIFE AND RESTART AND INITIAL POINT [55,55].
+			// IF LIFE IS AT 0, THEN GAME IS OVER!!
+			
+			if(lives== 1)
+				JOptionPane.showMessageDialog(this,"GAME OVER. SCORE: " + count );  
+			lives--;
+			g2.drawImage(image_ghost, ghost_loc_1.x, ghost_loc_1.y ,55, 55, null);
+			
+			location.x = 55;
+			location.y = 55;
+			
+			g2.drawImage(image, location.x, location.y, 55, 55, null);
+			
+			
+			
+			JOptionPane.showMessageDialog(this,"Down to: " + lives + " lives left" );  
+			}
+		}
+			
+	}
+		
+		
+		
+		
+	}		
+
+	
+	
+	
+	
+	
+	
+	
+	
+
