@@ -1,0 +1,124 @@
+package FinalProject;
+
+import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class MovePacMan implements KeyListener {
+
+	PacMan_Location location;
+	PacMan_Board board;
+	BufferedImage img;
+	Timer timer;
+	
+	
+	
+	// THIS CLASS KEEPS TRACK OF EACH CLICK OF KEYBOARD 
+	// 2ND MOST IMPORTANT CLASS AFTER PACMAN_BOARD
+	
+	public MovePacMan(PacMan_Board board) {
+		
+		this.board = board;
+		// THIS.LOCATION KEEPS TRACK OF 'X' AND 'Y' VALUE OF PACMAN
+		this.location = board.location;
+		this.img = board.image;
+		
+		
+	}
+		
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+		 board.repaint();
+		 int key = e.getKeyCode();
+		 
+		   
+		 
+		 if (key == KeyEvent.VK_LEFT) {
+			 
+			 if(location.x ==(0) && location.y ==715) {
+	    		 location.Portal_2();
+		    		board.which_pic = (4*board.Pellet_mode) + 0 ;	
+		    		board.repaint();
+	    	}
+	    	
+	    	else if(location.x ==(0) && location.y ==55) {
+	    		 location.Portal_3();
+		    		board.which_pic = (4*board.Pellet_mode) + 0 ;	
+		    		board.repaint();
+	    	}
+	    	
+	    		  location.change_x_left( location.x - 55   );
+	    		  board.which_pic = (4*board.Pellet_mode) + 1;
+	    		  board.repaint();
+	    		 
+			   	
+		    	
+			 }
+		    
+		 
+
+		    else if (key == KeyEvent.VK_RIGHT) {
+		    	
+		    	if(location.x ==(770) && location.y ==715) {
+		    		 location.Portal_1();
+			    	this.board.which_pic = (4*board.Pellet_mode) + 0 ;
+		    		
+		    		
+		    	}
+		    	
+		    	else if(location.x ==(770) && location.y ==55) {
+		    		 location.Portal_4();
+			    	this.board.which_pic = (4*board.Pellet_mode) + 0 ;		    				    		
+		    	}
+		    	
+		    	
+
+		    		location.change_x_right( location.x+55   );
+		    		this.board.which_pic = (4*board.Pellet_mode) + 0 ;
+		    	
+		    	
+		    }
+
+		    else if (key == KeyEvent.VK_UP) {
+		    	
+		    	
+		    	location.change_y_up( location.y - 55   );
+		    	this.board.which_pic = (4*board.Pellet_mode) + 2;
+		    	
+		    }
+
+		    else if (key == KeyEvent.VK_DOWN) {		    		
+		    			    	
+		    	location.change_y_down( location.y + 55   );
+		    	this.board.which_pic = (4*board.Pellet_mode) + 3;
+		    	
+		    }
+			
+		   	 
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+
+
+}
