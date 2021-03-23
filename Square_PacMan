@@ -1,0 +1,36 @@
+package FinalProject;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+
+public class Square_PacMan {
+
+	
+
+
+	int x, y, w,h;
+	
+	public Square_PacMan(int x, int y, int w, int h) {
+		this.x=x;
+		this.y=y;
+		this.w=w;
+		this.h=h;
+	}
+
+	public void draw(Graphics g2) {
+		// TODO Auto-generated method stub
+		g2.setColor(Color.BLUE);		
+		g2.drawRect(x, y, w, h);
+	
+	}
+	public void fill( Graphics g2  ) {
+		g2.setColor(Color.blue);
+		g2.fillRect(x, y, w, h);
+		//g2.drawRect(x, y, w, h);
+	}
+	
+}
+	
+	
