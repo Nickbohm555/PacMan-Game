@@ -14,7 +14,7 @@ I also added a feature where if one of the 3 big pellets are collected, PacMan i
 
 WHY DID I MAKE THIS?
 ---------------------
-I made this game because PacMan was my favorite Arcade game growing up and would be a fun final project for my CS 2 class. I learned more about Object Oriented Design and particularly more about the data scrtucture of 2D arrays and when to implement them effectively.
+I made this game because PacMan was my favorite Arcade game growing up and would be a fun final project for my CS 2 class. I learned more about Object Oriented Design and particularly more about the data structure of 2D arrays and when to implement them effectively.
 
 HOW DO I USE THIS?
 -------------------
