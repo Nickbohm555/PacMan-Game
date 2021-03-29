@@ -7,7 +7,9 @@ This project is a Graphical User Interface of the Arcade Game PacMan. The rules 
 
 The player controls Pac-Man, who must eat all the dots inside an enclosed maze while avoiding four colored ghosts. Eating large dots called "Power Pellets" causes the ghosts to turn go into 'Pellet mode', allowing Pac-Man to eat the ghosts for a temporary period of time. 
 
-Since I could not find a way for the Ghosts to remove regardless if the User (PacMan) moves, instead I programmed it such that every move the user makes is one random movement for the ghosts. I added 4 different 'Portals' on the screen where one portal allows the User to jump across the screen. Each regular pellet PacMan collects is +1 to the final score. PacMan has 3 lives, if he loses all 3 (meaning he collides with one of the ghosts) or wins the game before dying, the final score of all the pellets collected is displayed.
+Since I could not find a way for the Ghosts to move regardless if the User (PacMan) moves, instead I programmed it such that every move the user makes is one random movement for the ghosts. I added 4 different 'Portals' on the screen where one portal allows the User to jump across the screen. Each regular pellet PacMan collects is +1 to the final score. PacMan has 3 lives, if he loses all 3 (meaning he collides with one of the ghosts) or wins the game before dying, the final score of all the pellets collected is displayed.
+
+I also added a feature where if one of the 3 big pellets are collected, PacMan is able to eat one of the ghosts if it can catch it in the next 15 moves.
 
 
 WHY DID I MAKE THIS?
